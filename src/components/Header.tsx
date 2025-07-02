@@ -1,4 +1,3 @@
-import Like from "@public/like.svg";
 import LoginIcon from "@public/login-icon.svg";
 import Logo from "@public/logo.svg";
 import { useTranslations } from "next-intl";
@@ -18,12 +17,12 @@ const Header: FC = () => {
           <Link href="/" className="custom-border">
             {t("Home")}
           </Link>
-          <Link href="/recipes">{t("All recipes")}</Link>
-          <Link href="/my_recipes">{t("My recipes")}</Link>
+          <Link href="/dashboard/1">Dashboard</Link>
+          <Link href="/reports">Reports</Link>
         </nav>
         <div className="flex items-center justify-between">
-          <Link href="/favorites" className="">
-            <Like className="m-2" />
+          <Link href="/reportshistory" className="">
+            <h1>Report History</h1>
           </Link>
 
           <LoginIcon className="m-2" />

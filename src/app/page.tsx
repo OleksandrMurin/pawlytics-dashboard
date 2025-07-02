@@ -4,7 +4,7 @@ export default function Home() {
   const session = true;
 
   if (session) {
-    redirect("/dashboard");
+    redirect("/dashboard/1");
   }
 
   return (
