@@ -11,12 +11,12 @@ const Header: FC = () => {
           <Link href="/" className="custom-border">
             Home
           </Link>
-          <Link href="/recipes">All recipes</Link>
-          <Link href="/my_recipes">My recipes</Link>
+          <Link href="/dashboard/1">Dashboard</Link>
+          <Link href="/reports">Reports</Link>
         </nav>
         <div className="flex items-center justify-between">
-          <Link href="/favorites" className="">
-            <h1>Like</h1>
+          <Link href="/reportshistory" className="">
+            <h1>Report History</h1>
           </Link>
 
           <h1>LoginIcon</h1>
