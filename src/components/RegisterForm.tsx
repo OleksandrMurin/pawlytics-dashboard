@@ -40,7 +40,7 @@ export const RegisterForm = () => {
         <FormInput formik={formik} name={"username"} labelText="Username" />
         <FormInput
           formik={formik}
-          name={"password"}
+          name="password"
           labelText="Password"
           inputType="password"
         />
@@ -57,7 +57,7 @@ export const RegisterForm = () => {
             Forgot password?
           </Link>
           <p className="pt-2 text-2 self-center text-warm-grey400 custom-text-2">
-            {"No account? "}
+            No account?&nbsp;
             <Link
               href={"/auth/login"}
               className="custom-text-2 text-orange400 underline"

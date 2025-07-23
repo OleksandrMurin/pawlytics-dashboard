@@ -19,7 +19,7 @@ export const Sidebar = () => {
             key={title.id}
             id={title.id}
             title={title.title}
-            isChoosen={title.id === currentDashboardId}
+            isChosen={title.id === currentDashboardId}
           />
         ))}
       </div>
