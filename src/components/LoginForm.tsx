@@ -1,13 +1,20 @@
 "use client";
+import { authApi } from "@/api/authApi";
 import { FormInput } from "@/components/FormInput";
 import GoogleLogo from "@public/GoogleLogo.svg";
 import { useFormik } from "formik";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import * as Yup from "yup";
 import { Button } from "./Button";
 
 export const LoginForm = () => {
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
   const formik = useFormik({
     initialValues: {
       username: "",
@@ -18,7 +25,32 @@ export const LoginForm = () => {
       password: Yup.string().required("Password is required"),
     }),
 
-    onSubmit: () => {},
+    onSubmit: async (values) => {
+      setIsLoading(true);
+      setError(null);
+
+      try {
+        const response = await authApi.login(values);
+
+        console.log("Успешная авторизация:", response);
+
+        // Перенаправляем на дашборд
+        router.push("/dashboard");
+      } catch (error: any) {
+        console.error("Ошибка авторизации:", error);
+
+        // Обрабатываем разные типы ошибок
+        if (error.response?.status === 401) {
+          setError("Неверное имя пользователя или пароль");
+        } else if (error.response?.status === 400) {
+          setError("Некорректные данные");
+        } else {
+          setError("Произошла ошибка. Попробуйте позже");
+        }
+      } finally {
+        setIsLoading(false);
+      }
+    },
   });
 
   return (

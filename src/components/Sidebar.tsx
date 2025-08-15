@@ -3,6 +3,7 @@
 import { RootState } from "@/store";
 import { useParams } from "next/navigation";
 import { useSelector } from "react-redux";
+import { AddDashboardButton } from "./AddDashboardButton";
 import { TitleInSidebar } from "./TitleInSidebar";
 
 export const Sidebar = () => {
@@ -22,6 +23,7 @@ export const Sidebar = () => {
             isChosen={title.id === currentDashboardId}
           />
         ))}
+        <AddDashboardButton />
       </div>
     </div>
   );
