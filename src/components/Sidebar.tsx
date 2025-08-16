@@ -14,7 +14,7 @@ export const Sidebar = () => {
   const currentDashboardId = params.id;
   return (
     <div className="fixed w-1/6 h-full bg-gray-100">
-      <div className="flex flex-col gap-2 pt-20">
+      <div className="flex flex-col gap-2 pt-20 px-3">
         {dashboardTitles.map((title) => (
           <TitleInSidebar
             key={title.id}

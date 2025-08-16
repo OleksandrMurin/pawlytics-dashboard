@@ -23,9 +23,9 @@ export const AddDashboardButton = () => {
   return (
     <button
       onClick={handleAddDashboard}
-      className="w-full p-3 bg-blue-500 hover:bg-blue-600 text-white rounded-md transition-colors"
+      className="w-full mt-3 p-3 bg-blue-500 hover:bg-blue-600 text-white rounded-md transition-colors"
     >
-      + Добавить дашборд
+      + Add dashboard
     </button>
   );
 };

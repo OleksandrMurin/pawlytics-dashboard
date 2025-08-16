@@ -36,7 +36,7 @@ const initialState: DashboardState = {
       ],
       charts: [
         {
-          id: "chart-2",
+          id: "chart-1",
           title: "roomsPopularityData",
           metric: "roomsPopularity",
           chartType: "line",
@@ -70,7 +70,7 @@ const initialState: DashboardState = {
           },
         },
         {
-          id: "chart-1",
+          id: "chart-2",
           title: "Transport prices",
           metric: "roomsPopularity",
           chartType: "bar",
@@ -152,7 +152,7 @@ const initialState: DashboardState = {
     },
   },
   dashboardTitles: [
-    { id: "1", title: "Dashboard 1" },
+    { id: "1", title: "DemoDashboard" },
     { id: "2", title: "Dashboard 2" },
   ],
 };
@@ -198,7 +198,29 @@ const dashboardSlice = createSlice({
     ) {
       if (state.all[action.payload.id]) {
         state.all[action.payload.id].name = action.payload.name;
+        state.dashboardTitles = state.dashboardTitles.map((title) =>
+          title.id === action.payload.id
+            ? { ...title, title: action.payload.name }
+            : title
+        );
       }
+    },
+    deleteDashboard(state, action: PayloadAction<{ id: string }>) {
+      delete state.all[action.payload.id];
+      state.dashboardTitles = state.dashboardTitles.filter(
+        (title) => title.id !== action.payload.id
+      );
+    },
+    deleteChart(state, action: PayloadAction<{ id: string; chartId: string }>) {
+      const dashboardId = action.payload.id;
+      const chartId = action.payload.chartId;
+      console.log(dashboardId, chartId);
+      state.all[dashboardId].charts = state.all[dashboardId].charts.filter(
+        (chart) => chart.id !== chartId
+      );
+      state.all[dashboardId].layout = state.all[dashboardId].layout.filter(
+        (item) => item.i !== chartId
+      );
     },
   },
 });
@@ -211,6 +233,8 @@ export const {
   addDashboard,
   setDashboardTitles,
   addChart,
+  deleteDashboard,
+  deleteChart,
 } = dashboardSlice.actions;
 
 export default dashboardSlice.reducer;
