@@ -1,5 +1,11 @@
 "use client";
-import { updateDashboardName } from "@/store/dashboardSlice";
+import axiosInstance from "@/api/axiosInstance";
+import { METRICS_LABELS } from "@/constants";
+import {
+  addChart,
+  ChartData,
+  updateDashboardName,
+} from "@/store/dashboardSlice";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import { FC, useState } from "react";
@@ -30,16 +36,61 @@ export const DashboardPanel: FC<DashboardPanelProps> = ({ name, filters }) => {
     setIsChangingName(false);
   };
 
+  const handleAddChart = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.target as HTMLFormElement);
+    const metric = formData.get("metric-type") as string;
+    const year = formData.get("year") as string;
+    const chartType = formData.get("chart-type") as "bar" | "line" | "pie";
+    const metricObj = METRICS_LABELS[metric as keyof typeof METRICS_LABELS];
+    const response = await axiosInstance.get<ChartData>(
+      metricObj.endpoint + `${year}`
+    );
+
+    dispatch(
+      addChart({
+        id: params.id as string,
+        chart: {
+          id: metricObj.id,
+          title: metricObj.name,
+          metric,
+          chartType,
+          filters: false,
+          data: response.data,
+        },
+      })
+    );
+    console.log(response.data);
+    setIsAddChartOpen(false);
+  };
+
   return (
     <div className="flex mb-3 pl-3 justify-between bg-slate-200 w-full">
       <Modal isOpen={isAddChartOpen} onClose={() => setIsAddChartOpen(false)}>
-        <form className="flex flex-col gap-4 text-black p-5">
+        <form
+          onSubmit={handleAddChart}
+          className="flex flex-col gap-4 text-black p-5"
+        >
           <div className="flex justify-between">
             <label htmlFor="metric-type">Select the metric</label>
             <select name="metric-type" id="metric-type">
-              <option value="rppm">Rooms popularity per month</option>
-              <option value="line">Monthly animal feed costs</option>
-              <option value="appr">Annual profit per room</option>
+              {Object.entries(METRICS_LABELS).map(([key, value]) => {
+                return (
+                  <option key={key} value={key}>
+                    {value.name}
+                  </option>
+                );
+              })}
+            </select>
+          </div>
+          <div className="flex justify-between">
+            <label htmlFor="year">Select the year</label>
+            <select name="year" id="year">
+              {Array.from({ length: 6 }, (_, i) => (
+                <option key={i} value={i + 2020}>
+                  {i + 2020}
+                </option>
+              ))}
             </select>
           </div>
           <div className="flex justify-between">
@@ -48,13 +99,9 @@ export const DashboardPanel: FC<DashboardPanelProps> = ({ name, filters }) => {
               <option value="bar">Bar</option>
               <option value="line">Line</option>
               <option value="pie">Pie</option>
-              <option value="doughnut">Doughnut</option>
-              <option value="radar">Radar</option>
-              <option value="polar">Polar</option>
-              <option value="scatter">Scatter</option>
             </select>
           </div>
-          <button className="bg-green  rounded-md p-2 self-end">
+          <button type="submit" className="bg-green  rounded-md p-2 self-end">
             Add chart
           </button>
         </form>

@@ -177,6 +177,9 @@ const dashboardSlice = createSlice({
         title: action.payload.name,
       });
     },
+    addChart(state, action: PayloadAction<{ id: string; chart: Chart }>) {
+      state.all[action.payload.id].charts.push(action.payload.chart);
+    },
     updateDashboardLayout(
       state,
       action: PayloadAction<{ id: string; layout: Layout[] }>
@@ -207,6 +210,7 @@ export const {
   updateDashboardName,
   addDashboard,
   setDashboardTitles,
+  addChart,
 } = dashboardSlice.actions;
 
 export default dashboardSlice.reducer;

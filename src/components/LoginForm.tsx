@@ -28,14 +28,14 @@ export const LoginForm = () => {
     onSubmit: async (values) => {
       setIsLoading(true);
       setError(null);
-
+      console.log("onSubmit started");
       try {
         const response = await authApi.login(values);
 
         console.log("Успешная авторизация:", response);
 
         // Перенаправляем на дашборд
-        router.push("/dashboard");
+        router.push("/dashboard/1");
       } catch (error: any) {
         console.error("Ошибка авторизации:", error);
 
@@ -55,7 +55,7 @@ export const LoginForm = () => {
 
   return (
     <div className="w-1/3 relative rounded-xl p-px bg-gradient-to-br from-[#111213] to-[#191A1C] shadow-[0_0_40px_rgba(0,0,0,0.3)]">
-      <form className="bg-[#1B1B1D] p-4">
+      <form onSubmit={formik.handleSubmit} className="bg-[#1B1B1D] p-4">
         <h1 className="font-bold text-4xl text-cream200 pt-8">Sign In</h1>
         <h2 className="font-semibold text-3xl text-sage600 pt-3">
           Welcome back!

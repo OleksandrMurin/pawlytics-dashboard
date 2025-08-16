@@ -14,7 +14,7 @@ export const TitleInSidebar: FC<TitleInSidebarProps> = ({
   isChosen,
 }) => {
   return (
-    <Link href={`/dashboard/${id}`}>
+    <Link href={`/dashboard/${id}`} className="w-full flex justify-center">
       <h1
         className={`${
           isChosen
@@ -24,6 +24,7 @@ export const TitleInSidebar: FC<TitleInSidebarProps> = ({
       >
         {title}
       </h1>
+      <button className="absolute right-0 top-0 w-8 h-8"></button>
     </Link>
   );
 };

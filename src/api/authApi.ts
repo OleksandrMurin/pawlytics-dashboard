@@ -13,20 +13,12 @@ interface RegisterCredentials {
   password_confirm: string;
 }
 
-interface User {
-  id: number;
-  username: string;
-  email: string;
-}
-
 interface LoginResponse {
   access: string;
   refresh: string;
-  user?: User;
 }
 
 export const authApi = {
-  // Логин
   login: async (credentials: LoginCredentials): Promise<LoginResponse> => {
     const response = await axiosInstance.post<LoginResponse>(
       "/api/auth/login/",
@@ -42,7 +34,6 @@ export const authApi = {
     return response.data;
   },
 
-  // Регистрация
   register: async (
     credentials: RegisterCredentials
   ): Promise<LoginResponse> => {
@@ -51,7 +42,6 @@ export const authApi = {
       credentials
     );
 
-    // Сохраняем токены
     TokenManager.setTokens({
       access: response.data.access,
       refresh: response.data.refresh,
@@ -60,7 +50,6 @@ export const authApi = {
     return response.data;
   },
 
-  // Логаут
   logout: async (): Promise<void> => {
     const refreshToken = TokenManager.getRefreshToken();
 
@@ -74,17 +63,9 @@ export const authApi = {
       }
     }
 
-    // Очищаем токены локально
     TokenManager.clearTokens();
   },
 
-  // Получение профиля пользователя
-  getProfile: async (): Promise<User> => {
-    const response = await axiosInstance.get<User>("/api/auth/profile/");
-    return response.data;
-  },
-
-  // Проверка авторизации
   isAuthenticated: (): boolean => {
     return TokenManager.hasValidTokens();
   },
