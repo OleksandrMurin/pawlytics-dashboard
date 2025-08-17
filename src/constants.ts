@@ -39,3 +39,9 @@ export const METRICS_LABELS = {
     endpoint: "api/hotels/visits-by-species/?year=",
   },
 };
+
+export const CHART_SIZES = {
+  small: { x: 0, y: 0, w: 6, h: 3 },
+  medium: { x: 0, y: 0, w: 8, h: 4 },
+  large: { x: 0, y: 0, w: 12, h: 6 },
+};

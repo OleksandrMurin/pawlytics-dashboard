@@ -29,10 +29,10 @@ export const DashboardGrid = () => {
     );
   };
   return (
-    <div>
+    <div className="outline outline-2 rounded-md outline-slate-700">
       {dashboard.charts && (
         <GridLayout
-          className="layout min-h-[80vh] relative bg-slate-800 text-black"
+          className="layout rounded-md min-h-[80vh] relative bg-slate-800 text-black"
           layout={dashboard.layout}
           cols={20}
           rowHeight={100}
@@ -49,7 +49,7 @@ export const DashboardGrid = () => {
                 onMouseEnter={() => setHoveredChartId(chart.id)}
                 onMouseLeave={() => setHoveredChartId(null)}
                 key={chart.id}
-                className="bg-blue-100 p-2 select-none relative"
+                className="bg-blue-100 p-2 rounded-md shadow-lg shadow-slate-900 select-none relative"
               >
                 {ChartCreator(chart.chartType, chart.data)}
                 {hoveredChartId === chart.id && (
@@ -58,6 +58,12 @@ export const DashboardGrid = () => {
                     chartId={chart.id}
                   />
                 )}
+                <div className="absolute top-5 left-[40%]">
+                  <h2 className="text-xl text-black">{chart.title}</h2>
+                </div>
+                <h3 className="absolute text-gray-500 top-14 left-[40%]">
+                  data for 2024
+                </h3>
               </div>
             );
           })}

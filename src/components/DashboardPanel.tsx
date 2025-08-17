@@ -1,6 +1,6 @@
 "use client";
 import axiosInstance from "@/api/axiosInstance";
-import { METRICS_LABELS } from "@/constants";
+import { CHART_SIZES, METRICS_LABELS } from "@/constants";
 import {
   addChart,
   ChartData,
@@ -41,6 +41,7 @@ export const DashboardPanel: FC<DashboardPanelProps> = ({ name, filters }) => {
     const formData = new FormData(e.target as HTMLFormElement);
     const metric = formData.get("metric-type") as string;
     const year = formData.get("year") as string;
+    const layout = formData.get("layout") as string;
     const chartType = formData.get("chart-type") as "bar" | "line" | "pie";
     const metricObj = METRICS_LABELS[metric as keyof typeof METRICS_LABELS];
     const response = await axiosInstance.get<ChartData>(
@@ -58,6 +59,10 @@ export const DashboardPanel: FC<DashboardPanelProps> = ({ name, filters }) => {
           filters: false,
           data: response.data,
         },
+        chartLayout: {
+          i: `${metricObj.id}`,
+          ...CHART_SIZES[layout as keyof typeof CHART_SIZES],
+        },
       })
     );
     console.log(response.data);
@@ -65,15 +70,24 @@ export const DashboardPanel: FC<DashboardPanelProps> = ({ name, filters }) => {
   };
 
   return (
-    <div className="flex mb-3 pl-3 justify-between bg-slate-200 w-full">
+    <div className="flex mb-3 p-2 rounded-md justify-between bg-slate-200 w-full">
       <Modal isOpen={isAddChartOpen} onClose={() => setIsAddChartOpen(false)}>
         <form
           onSubmit={handleAddChart}
-          className="flex flex-col gap-4 text-black p-5"
+          className="flex flex-col gap-4 text-black p-2"
         >
-          <div className="flex justify-between">
-            <label htmlFor="metric-type">Select the metric</label>
-            <select name="metric-type" id="metric-type">
+          <div className="flex flex-col justify-between">
+            <label
+              htmlFor="metric-type"
+              className="text-sm font-medium text-gray-600 mb-1 italic"
+            >
+              Select the metric
+            </label>
+            <select
+              name="metric-type"
+              id="metric-type"
+              className="w-full border rounded-lg px-2 py-1.5"
+            >
               {Object.entries(METRICS_LABELS).map(([key, value]) => {
                 return (
                   <option key={key} value={key}>
@@ -83,9 +97,18 @@ export const DashboardPanel: FC<DashboardPanelProps> = ({ name, filters }) => {
               })}
             </select>
           </div>
-          <div className="flex justify-between">
-            <label htmlFor="year">Select the year</label>
-            <select name="year" id="year">
+          <div className="flex flex-col justify-between">
+            <label
+              htmlFor="year"
+              className="text-sm font-medium text-gray-600 mb-1 italic"
+            >
+              Select the year
+            </label>
+            <select
+              name="year"
+              id="year"
+              className="w-full border rounded-lg px-2 py-1.5"
+            >
               {Array.from({ length: 6 }, (_, i) => (
                 <option key={i} value={i + 2020}>
                   {i + 2020}
@@ -93,23 +116,52 @@ export const DashboardPanel: FC<DashboardPanelProps> = ({ name, filters }) => {
               ))}
             </select>
           </div>
-          <div className="flex justify-between">
-            <label htmlFor="chart-type">Select chart type</label>
-            <select name="chart-type" id="chart-type">
+          <div className="flex flex-col justify-between">
+            <label
+              htmlFor="chart-type"
+              className="text-sm font-medium text-gray-600 mb-1 italic"
+            >
+              Select chart type
+            </label>
+            <select
+              name="chart-type"
+              id="chart-type"
+              className="w-full border rounded-lg px-2 py-1.5"
+            >
               <option value="bar">Bar</option>
               <option value="line">Line</option>
               <option value="pie">Pie</option>
             </select>
           </div>
-          <button type="submit" className="bg-green  rounded-md p-2 self-end">
-            Add chart
+          <div className="flex flex-col justify-between">
+            <label
+              htmlFor="layout"
+              className="text-sm font-medium text-gray-600 mb-1 italic"
+            >
+              Select size of chart
+            </label>
+            <select
+              name="layout"
+              id="layout"
+              className="w-full border rounded-lg px-2 py-1.5"
+            >
+              <option value="small">Small</option>
+              <option value="medium">Medium</option>
+              <option value="large">Large</option>
+            </select>
+          </div>
+          <button
+            type="submit"
+            className="w-full bg-lime-500 text-white font-semibold rounded-lg py-2 hover:bg-lime-600 transition"
+          >
+            <p>+ Add chart</p>
           </button>
         </form>
       </Modal>
       {isChangingName ? (
         <div className="flex items-center justify-between min-w-48">
           <input
-            className="min-w-40 p-1 pl-3 rounded-md"
+            className="min-w-40 p-1 pl-2 rounded-md text-xl"
             value={dashboardName}
             onChange={(e) => setDashboardName(e.target.value)}
           />
@@ -124,8 +176,8 @@ export const DashboardPanel: FC<DashboardPanelProps> = ({ name, filters }) => {
           </button>
         </div>
       ) : (
-        <div className="flex items-center justify-between min-w-48">
-          <h1 className="min-w-40">{name}</h1>
+        <div className="flex items-center text-xl justify-between min-w-48">
+          <h1 className="min-w-40 pl-2">{name}</h1>
           <button onClick={() => setIsChangingName(!isChangingName)}>
             <Image
               className="pl-3 w-8 h-8 select-none"
@@ -138,12 +190,12 @@ export const DashboardPanel: FC<DashboardPanelProps> = ({ name, filters }) => {
         </div>
       )}
 
-      <div className="flex gap-4">
+      <div className="flex gap-4 ">
         <button
           onClick={() => setIsFiltersOpen(!isFiltersOpen)}
-          className="relative w-20"
+          className="relative rounded-md w-28 bg-slate-300 p-2"
         >
-          Filters
+          <span className="text-slate-800 text-xl">Filters</span>
           {isFiltersOpen && (
             <div className="absolute w-full top-full left-0 bg-white p-2 rounded-md text-black">
               {filters.map((filter) => (
@@ -153,13 +205,10 @@ export const DashboardPanel: FC<DashboardPanelProps> = ({ name, filters }) => {
           )}
         </button>
         <button
-          className="p-2 rounded-md bg-green text-white"
+          className="p-2 min-w-20 text-xl rounded-md bg-lime-500 text-white transition hover:bg-lime-600"
           onClick={() => setIsAddChartOpen(!isAddChartOpen)}
         >
-          Add Chart
-        </button>
-        <button className="p-2 rounded-md bg-rose-800 text-white">
-          Delete charts
+          + Add chart
         </button>
       </div>
     </div>

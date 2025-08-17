@@ -4,21 +4,6 @@ import { ResponsiveLine } from "@nivo/line";
 import { barChartAdapter, lineChartAdapter } from "../store/Adapters";
 import { ChartData } from "../store/dashboardSlice";
 
-const CustomLayer = ({ width, title }: { width: number; title: string }) => {
-  return (
-    <text
-      x={width / 2}
-      y={-20}
-      textAnchor="middle"
-      dominantBaseline="hanging"
-      style={{ fontSize: 16, fontWeight: "bold" }}
-      fill="black"
-    >
-      {title}
-    </text>
-  );
-};
-
 export const ChartCreator = (
   chartType: "bar" | "line" | "pie",
   data: ChartData
@@ -30,6 +15,7 @@ export const ChartCreator = (
         <ResponsiveLine
           data={lineData}
           margin={{ top: 100, right: 110, bottom: 50, left: 60 }}
+          colors={{ scheme: "spectral" }}
           yScale={{
             type: "linear",
             min: "auto",
@@ -56,7 +42,6 @@ export const ChartCreator = (
               symbolShape: "circle",
             },
           ]}
-          layers={["grid", "lines", "points", "axes", "legends", CustomLayer()]}
         />
       );
     case "bar":
@@ -66,6 +51,7 @@ export const ChartCreator = (
           data={barData}
           indexBy="country"
           keys={Object.keys(barData[0]).filter((x) => x !== "country")}
+          colors={{ scheme: "spectral" }}
           labelSkipWidth={12}
           labelSkipHeight={12}
           legends={[
@@ -81,8 +67,7 @@ export const ChartCreator = (
           ]}
           axisBottom={{ legend: "country (indexBy)", legendOffset: 32 }}
           axisLeft={{ legend: "food", legendOffset: -40 }}
-          margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
-          layers={["grid", "markers", "bars", "axes", "legends", CustomLayer]}
+          margin={{ top: 100, right: 130, bottom: 50, left: 60 }}
         />
       );
   }

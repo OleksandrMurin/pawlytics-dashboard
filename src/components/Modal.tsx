@@ -15,7 +15,7 @@ export const Modal = ({
   return createPortal(
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div className="absolute inset-0 bg-black bg-opacity-50">
-        <div className="relative left-[40%] top-[40%] z-10 bg-white rounded-lg shadow-lg p-8 min-w-[320px] max-w-[500px]">
+        <div className="relative left-[35%] top-[30%] z-10 bg-white rounded-lg shadow-lg p-8 pb-4 min-w-[320px] max-w-[400px]">
           <button
             className="absolute top-2 right-5 text-2xl text-gray-400 hover:text-black"
             onClick={onClose}
@@ -29,9 +29,7 @@ export const Modal = ({
       <div
         onClick={onClose}
         className="absolute inset-0 bg-black bg-opacity-50"
-      >
-        Modal overlay
-      </div>
+      ></div>
     </div>,
     document.body
   );

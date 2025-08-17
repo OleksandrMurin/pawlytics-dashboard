@@ -37,7 +37,7 @@ const initialState: DashboardState = {
       charts: [
         {
           id: "chart-1",
-          title: "roomsPopularityData",
+          title: "Popularity of rooms",
           metric: "roomsPopularity",
           chartType: "line",
           filters: false,
@@ -177,8 +177,12 @@ const dashboardSlice = createSlice({
         title: action.payload.name,
       });
     },
-    addChart(state, action: PayloadAction<{ id: string; chart: Chart }>) {
+    addChart(
+      state,
+      action: PayloadAction<{ id: string; chart: Chart; chartLayout: Layout }>
+    ) {
       state.all[action.payload.id].charts.push(action.payload.chart);
+      state.all[action.payload.id].layout.push(action.payload.chartLayout);
     },
     updateDashboardLayout(
       state,
