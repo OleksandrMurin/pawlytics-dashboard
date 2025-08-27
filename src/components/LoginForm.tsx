@@ -21,31 +21,34 @@ export const LoginForm = () => {
       password: "",
     },
     validationSchema: Yup.object({
-      username: Yup.string().required("Username is required"),
-      password: Yup.string().required("Password is required"),
+      username: Yup.string()
+        .required("Username is required")
+        .min(3, "Username must be at least 3 characters")
+        .max(50, "Username must be at most 50 characters")
+        .matches(
+          /^[a-zA-Z0-9_]+$/,
+          "Username can only contain letters, numbers and underscores"
+        ),
+
+      password: Yup.string()
+        .required("Password is required")
+        .min(6, "Password must be at least 6 characters")
+        .max(128, "Password must be at most 128 characters"),
     }),
 
     onSubmit: async (values) => {
       setIsLoading(true);
       setError(null);
-      console.log("onSubmit started");
       try {
         const response = await authApi.login(values);
-
-        console.log("Успешная авторизация:", response);
-
-        // Перенаправляем на дашборд
         router.push("/dashboard/1");
       } catch (error: any) {
-        console.error("Ошибка авторизации:", error);
-
-        // Обрабатываем разные типы ошибок
         if (error.response?.status === 401) {
-          setError("Неверное имя пользователя или пароль");
+          setError("Invalid username or password");
         } else if (error.response?.status === 400) {
-          setError("Некорректные данные");
+          setError("Invalid data");
         } else {
-          setError("Произошла ошибка. Попробуйте позже");
+          setError("An error occurred. Please try again later");
         }
       } finally {
         setIsLoading(false);

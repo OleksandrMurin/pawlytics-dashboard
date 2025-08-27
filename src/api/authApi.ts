@@ -24,8 +24,6 @@ export const authApi = {
       "/api/auth/login/",
       credentials
     );
-
-    // Сохраняем токены
     TokenManager.setTokens({
       access: response.data.access,
       refresh: response.data.refresh,

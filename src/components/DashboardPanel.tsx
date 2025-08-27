@@ -1,6 +1,7 @@
 "use client";
 import axiosInstance from "@/api/axiosInstance";
 import { CHART_SIZES, METRICS_LABELS } from "@/constants";
+import { RootState } from "@/store";
 import {
   addChart,
   ChartData,
@@ -9,7 +10,8 @@ import {
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import { FC, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { GenerateReportButton } from "./GenerateReportButton";
 import { Modal } from "./Modal";
 
 interface DashboardPanelProps {
@@ -23,6 +25,9 @@ export const DashboardPanel: FC<DashboardPanelProps> = ({ name, filters }) => {
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
   const dispatch = useDispatch();
   const params = useParams();
+  const dashboard = useSelector(
+    (state: RootState) => state.dashboards.all[params.id as string]
+  );
   const [isAddChartOpen, setIsAddChartOpen] = useState(false);
   const [isChangingName, setIsChangingName] = useState(false);
   const [dashboardName, setDashboardName] = useState(name);
@@ -210,6 +215,7 @@ export const DashboardPanel: FC<DashboardPanelProps> = ({ name, filters }) => {
         >
           + Add chart
         </button>
+        <GenerateReportButton dashboard={dashboard} />
       </div>
     </div>
   );

@@ -46,6 +46,7 @@ export const DashboardGrid = () => {
           {dashboard.charts.map((chart) => {
             return (
               <div
+                data-chart-id={chart.id}
                 onMouseEnter={() => setHoveredChartId(chart.id)}
                 onMouseLeave={() => setHoveredChartId(null)}
                 key={chart.id}
@@ -58,10 +59,10 @@ export const DashboardGrid = () => {
                     chartId={chart.id}
                   />
                 )}
-                <div className="absolute top-5 left-[40%]">
+                <div className="absolute top-5 left-[10%]">
                   <h2 className="text-xl text-black">{chart.title}</h2>
                 </div>
-                <h3 className="absolute text-gray-500 top-14 left-[40%]">
+                <h3 className="absolute text-gray-500 top-14 left-[10%]">
                   data for 2024
                 </h3>
               </div>

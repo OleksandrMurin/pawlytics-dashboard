@@ -6,7 +6,7 @@ type LineChartData = Array<{
 }>;
 type PieChartData = Array<{
   id: string;
-  lable: string;
+  label: string;
   value: number;
   color: string;
 }>;
@@ -26,4 +26,16 @@ const generateColor = (index: number): string => {
 
 export const barChartAdapter = (arr: ChartData): BarChartData => {
   return Object.entries(arr).map(([key, data]) => ({ country: key, ...data }));
+};
+
+export const pieChartAdapter = (arr: ChartData): PieChartData => {
+  // Берем первый объект из ChartData (в вашем случае это FirstData)
+  const firstData = Object.values(arr)[0] as Record<string, number>;
+
+  return Object.entries(firstData).map(([key, value], index) => ({
+    id: key,
+    label: key,
+    value: value,
+    color: generateColor(index),
+  }));
 };

@@ -20,10 +20,8 @@ const axiosInstance = axios.create({
   },
 });
 
-// Функции для работы с токенами
 const TokenManager = {
   getAccessToken: (): string | null => {
-    // Проверяем, что мы на клиенте
     if (typeof window === "undefined") return null;
     return localStorage.getItem("access_token");
   },

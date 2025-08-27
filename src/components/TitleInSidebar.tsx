@@ -26,7 +26,7 @@ export const TitleInSidebar: FC<TitleInSidebarProps> = ({
       href={`/dashboard/${id}`}
       className={`h-10 rounded-md flex justify-between items-center px-3 ${
         isChosen
-          ? "text-orange400 bg-slate-700 w-full"
+          ? "text-white bg-slate-500 w-full"
           : "text-black bg-slate-200 w-[95%]"
       }`}
       onMouseEnter={() => setIsHovering(true)}
